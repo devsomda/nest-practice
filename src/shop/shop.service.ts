@@ -7,7 +7,7 @@ export class ShopService {
   constructor(private readonly dbService: DatabaseService) {}
 
   async getOrders() {
-    const connection = await this.dbService.getConnection().getConnection();
+    const connection = await this.dbService.getPool().getConnection();
 
     try {
       const [rows] = await connection.query('SELECT * FROM order_table');
@@ -20,7 +20,7 @@ export class ShopService {
   }
 
   async getOrder(productId) {
-    const connection = await this.dbService.getConnection().getConnection();
+    const connection = await this.dbService.getPool().getConnection();
 
     try {
       const [rows] = await connection.query(
@@ -36,7 +36,7 @@ export class ShopService {
   }
 
   async getProductInfo() {
-    const connection = await this.dbService.getConnection().getConnection();
+    const connection = await this.dbService.getPool().getConnection();
 
     try {
       const [rows] = await connection.query('SELECT * FROM product_table');
@@ -49,7 +49,7 @@ export class ShopService {
   }
 
   async createProduct(productData: ProductDto) {
-    const connection = await this.dbService.getConnection().getConnection();
+    const connection = await this.dbService.getPool().getConnection();
 
     try {
       await connection.query('INSERT INTO product_table SET ?', productData);
@@ -61,7 +61,7 @@ export class ShopService {
   }
 
   async orderProduct(orderData: OrderDto) {
-    const connection = await this.dbService.getConnection().getConnection();
+    const connection = await this.dbService.getPool().getConnection();
 
     try {
       await connection.query('INSERT INTO order_table SET ?', orderData);

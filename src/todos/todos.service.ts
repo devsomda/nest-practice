@@ -6,7 +6,7 @@ export class TodoService {
   constructor(private readonly dbService: DatabaseService) {}
 
   async getAllTodos() {
-    const connection = await this.dbService.getConnection().getConnection();
+    const connection = await this.dbService.getPool().getConnection();
     try {
       const [rows] = await connection.query('SELECT * FROM todotable');
       return rows;
@@ -16,7 +16,7 @@ export class TodoService {
   }
 
   async createTodo(todoData) {
-    const connection = await this.dbService.getConnection().getConnection();
+    const connection = await this.dbService.getPool().getConnection();
     try {
       await connection.query('INSERT INTO todotable SET ?', todoData);
     } catch (err) {
@@ -27,7 +27,7 @@ export class TodoService {
   }
 
   async deleteTodo(id) {
-    const connection = await this.dbService.getConnection().getConnection();
+    const connection = await this.dbService.getPool().getConnection();
     try {
       await connection.query('delete from todotable where idx = ?', id);
     } catch (err) {
@@ -38,7 +38,7 @@ export class TodoService {
   }
 
   async updateTodo(id, todoData) {
-    const connection = await this.dbService.getConnection().getConnection();
+    const connection = await this.dbService.getPool().getConnection();
     try {
       const { content } = todoData;
       console.log(todoData);

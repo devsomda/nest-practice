@@ -17,7 +17,7 @@ export class DatabaseService {
     console.log('Pool~!');
   }
 
-  getConnection(): mysql.Pool {
+  getPool(): mysql.Pool {
     return this.pool;
   }
 }
