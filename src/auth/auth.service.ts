@@ -48,4 +48,8 @@ export class AuthService {
       connection.release();
     }
   }
+
+  async helloUser(user) {
+    return `안녕하세요, ${user}`;
+  }
 }
