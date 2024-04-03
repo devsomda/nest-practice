@@ -42,7 +42,7 @@ export class ShopService {
       const [rows] = await connection.query('SELECT * FROM product_table');
       return rows;
     } catch (err) {
-      console.error(err);
+      throw err;
     } finally {
       connection.release();
     }
@@ -54,7 +54,7 @@ export class ShopService {
     try {
       await connection.query('INSERT INTO product_table SET ?', productData);
     } catch (err) {
-      console.error(err);
+      throw err;
     } finally {
       connection.release();
     }
@@ -72,5 +72,18 @@ export class ShopService {
     }
   }
 
-  async getProductOrder() {}
+  async deleteOrder(orderId: number) {
+    const connection = await this.dbService.getPool().getConnection();
+
+    try {
+      await connection.query(
+        'delete from order_table where order_id = ?',
+        orderId,
+      );
+    } catch (err) {
+      console.error(err);
+    } finally {
+      connection.release();
+    }
+  }
 }

@@ -1,7 +1,19 @@
-import { Body, Controller, Get, Post, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Query,
+  UseGuards,
+  Request,
+} from '@nestjs/common';
 import { ShopService } from './shop.service';
 import { OrderDto, ProductDto } from './product.dto';
+import { AuthGuard } from 'src/auth/auth.guard';
 
+@UseGuards(AuthGuard)
 @Controller('shop') // router
 export class ShopController {
   constructor(private readonly shopService: ShopService) {}
@@ -17,7 +29,8 @@ export class ShopController {
   }
 
   @Get('/product')
-  getAll() {
+  getAll(@Request() req) {
+    console.log(req.user, 'api 받는 곳');
     return this.shopService.getProductInfo();
   }
 
@@ -29,5 +42,10 @@ export class ShopController {
   @Post('/order')
   orderProduct(@Body() orderData: OrderDto) {
     return this.shopService.orderProduct(orderData);
+  }
+
+  @Delete('order/:order_id')
+  deleteOrder(@Param('order_id') orderId: number) {
+    return this.shopService.deleteOrder(orderId);
   }
 }
